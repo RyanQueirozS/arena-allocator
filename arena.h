@@ -54,6 +54,7 @@ typedef struct Arena {
 
 void  ArenaInit(Arena* arena, size_t capacity);
 void* ArenaAlloc(Arena* arena, size_t size);
+void* ArenaAllocAligned(Arena* arena, size_t size, size_t alignment);
 void  ArenaReset(Arena* arena);
 void  ArenaDelete(Arena* arena);
 
@@ -76,6 +77,17 @@ void* ArenaAlloc(Arena* arena, size_t size) {
     void* ptr = (void*)(arena->data + arena->offset);
     arena->offset += size;
     return ptr;
+}
+
+void* ArenaAllocAligned(Arena* arena, size_t size, size_t alignment) {
+    size_t current   = (size_t)arena->data + arena->offset;
+    size_t aligned   = (current + alignment - 1) & ~(alignment - 1);
+    size_t newOffset = aligned + size - (size_t)arena->data;
+
+    ARENA_ASSERT(newOffset <= arena->capacity);
+
+    arena->offset = newOffset;
+    return (void*)aligned;
 }
 
 void ArenaReset(Arena* arena) {
