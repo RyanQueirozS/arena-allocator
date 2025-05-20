@@ -22,12 +22,12 @@
 #ifndef __ARENA_ALLOCATOR_H__
 #define __ARENA_ALLOCATOR_H__
 
-#include <stdint.h>
-#include <stdio.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+#include <stdint.h>
+#include <stdio.h>
 
 #ifndef ARENA_ASSERT
 #include <assert.h>
